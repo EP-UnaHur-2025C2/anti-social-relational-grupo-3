@@ -3,8 +3,7 @@ const { User } = require("../../db/models");
 
 const crearUser = async (req, res) => {
   try {
-    const { nickName } = req.body;
-    const user = await User.create({ nickName });
+    const user = await User.create(req.body);
     res.status(201).json(user);
   } catch (error) {
     if (error instanceof Sequelize.UniqueConstraintError) {

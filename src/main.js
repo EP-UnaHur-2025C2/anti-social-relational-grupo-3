@@ -1,14 +1,16 @@
-const express = require('express');
-const db = require('../db/models')
-const userRouter = require('./routes/userRoutes');
+const express = require("express");
+const db = require("../db/models");
+const userRouter = require("./routes/userRoutes");
+const postRouter = require("./routes/postRoutes");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
-app.use('/users', userRouter);
+app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 app.listen(PORT, async () => {
   console.log(`Server escuchando en el puerto ${PORT}`);
-  await db.sequelize.sync({ force: false })
+  await db.sequelize.sync({ force: false });
 });
