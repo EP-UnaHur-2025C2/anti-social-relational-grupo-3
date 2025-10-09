@@ -9,6 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Post, { foreignKey: "userId" });
+
+      // User.belongsToMany(User, {
+      //   through: "Followers",
+      //   as: "Seguidores", // los que lo siguen
+      //   foreignKey: "followedId",
+      // });
+
+      // User.belongsToMany(User, {
+      //   through: "Followers",
+      //   as: "Seguidos", // los que él sigue
+      //   foreignKey: "followerId",
+      // });
     }
   }
   User.init(

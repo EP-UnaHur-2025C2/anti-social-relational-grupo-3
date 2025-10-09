@@ -4,6 +4,14 @@ const { Post } = require("../../db/models");
 const crearPost = async (req, res) => {
   try {
     const post = await Post.create(req.body);
+
+    // Crear imágenes y asociarlas al post
+    // Las imágenes no existen
+    // Hay que crearlas a partir de lo que venga en body
+
+    // Asociar tags al post
+    // El tag ya existe, solo hay que asociarlo
+
     res.status(201).json(post);
   } catch (error) {
     res.status(500).json({ message: "Error" });
@@ -39,6 +47,13 @@ const actualizarPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post no encontrado" });
     }
+
+    // Actualizar imágenes asociadas al post
+    // Las imágenes no existen, hay que crearlas a partir de lo que venga en body
+
+    // Asociar tags al post
+    // El tag ya existe, solo hay que asociarlo
+
     await post.update(req.body);
     res.status(200).json(post);
   } catch (error) {
