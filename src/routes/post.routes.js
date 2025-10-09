@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const postController = require("../controllers/postController");
+const postController = require("../controllers/post.controller");
 const { validateId } = require("../middlewares/generic.middleware");
 
 const router = Router();

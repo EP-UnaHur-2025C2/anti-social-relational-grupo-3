@@ -40,12 +40,15 @@ const actualizarUser = async (req, res) => {
 };
 
 const eliminarUser = async (req, res) => {
+  console.log("eliminarUser");
   try {
     const { id } = req.params;
     const user = await User.findByPk(id);
+    console.log(user);
     await user.destroy();
-    res.status(200).json({ message: "User eliminado correctamente" });
+    res.status(200).json(user);
   } catch (error) {
+    console.log("error", error);
     res.status(500).json({ message: "Error" });
   }
 };
