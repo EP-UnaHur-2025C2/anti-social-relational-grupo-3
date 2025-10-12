@@ -10,19 +10,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        type: Sequelize.STRING,
+        allowNull : false,
       }, 
       createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
+        type: Sequelize.DATE,
+        allowNull: false
       },
       updatedAt: {
-        type: DataTypes.DATE,
+        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
       }
     });
   },
