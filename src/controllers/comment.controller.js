@@ -1,5 +1,5 @@
 const { Comment } = require("../../db/models");
-const { Op } = require('sequelize'); 
+const { Op } = require('sequelize');
 
 
 const crearComment = async (req, res) => {
@@ -23,16 +23,17 @@ const obtenerComment = async (req, res) => {
 
 const obtenerComments = async (req, res) => {
   try {
-    const months = parseInt(req.query.months) || 6; //le paso por default 6 meses si no manda la cantidad en la query
+    //dejo por default en 6 meses si no manda la cantidad en la query o hay problemas en el env
+    const months = parseInt(req.query.months) || process.env.COMMENTS_VISIBLE_MONTHS || 6;
 
-    const today = new Date(); 
+    const today = new Date();
     const limitMonth = new Date();
     limitMonth.setMonth(limitMonth.getMonth() - months); //calculo los meses
 
     const recentComments = await Comment.findAll({
       where: {
-        date: { 
-          [Op.between]: [limitMonth, today] 
+        date: {
+          [Op.between]: [limitMonth, today]
         }
       },
       order: [["date", "DESC"]],
