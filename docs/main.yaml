@@ -1,0 +1,551 @@
+openapi: 3.0.0
+info:
+  title: Red Anti Social API
+  version: "1.0.0"
+  description: Documentación de la API - Proyecto Red Anti Social (Grupo 3)
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+tags:
+  - name: Comments
+    description: Operaciones relacionadas con los comentarios
+  - name: Posts
+    description: Operaciones relacionadas con los posts
+  - name: Tags
+    description: Operaciones relacionadas con los tags
+  - name: Users
+    description: Operaciones relacionadas con los usuarios
+
+paths:
+  /comments:
+    get:
+      tags:
+        - Comments
+      summary: Obtener comentarios recientes
+      description: Devuelve los comentarios creados dentro de los últimos N meses.
+      parameters:
+        - name: months
+          in: query
+          schema:
+            type: integer
+          description: Cantidad de meses hacia atrás (por defecto 6)
+      responses:
+        "200":
+          description: Lista de comentarios recientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentList'
+        "500":
+          description: Error al obtener los comentarios
+    post:
+      tags:
+        - Comments
+      summary: Crear un nuevo comentario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+      responses:
+        "201":
+          description: Comentario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        "500":
+          description: Error al crear el comentario
+
+  /comments/{id}:
+    get:
+      tags:
+        - Comments
+      summary: Obtener un comentario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Comentario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        "404":
+          description: Comentario no encontrado
+        "500":
+          description: Error del servidor
+    put:
+      tags:
+        - Comments
+      summary: Actualizar un comentario existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+      responses:
+        "200":
+          description: Comentario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        "404":
+          description: Comentario no encontrado
+        "500":
+          description: Error al actualizar el comentario
+    delete:
+      tags:
+        - Comments
+      summary: Eliminar un comentario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Comentario eliminado
+        "404":
+          description: Comentario no encontrado
+        "500":
+          description: Error al eliminar el comentario
+
+  /posts:
+    get:
+      tags:
+        - Posts
+      summary: Obtener todos los posts
+      responses:
+        "200":
+          description: Lista de posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostList'
+        "500":
+          description: Error al obtener los posts
+    post:
+      tags:
+        - Posts
+      summary: Crear un nuevo post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreate'
+      responses:
+        "201":
+          description: Post creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        "500":
+          description: Error al crear el post
+
+  /posts/{id}:
+    get:
+      tags:
+        - Posts
+      summary: Obtener un post por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Post encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        "404":
+          description: Post no encontrado
+        "500":
+          description: Error del servidor
+    put:
+      tags:
+        - Posts
+      summary: Actualizar un post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreate'
+      responses:
+        "200":
+          description: Post actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        "404":
+          description: Post no encontrado
+        "500":
+          description: Error al actualizar el post
+    delete:
+      tags:
+        - Posts
+      summary: Eliminar un post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Post eliminado
+        "404":
+          description: Post no encontrado
+        "500":
+          description: Error al eliminar el post
+
+  /tags:
+    get:
+      tags:
+        - Tags
+      summary: Obtener todas las etiquetas
+      responses:
+        "200":
+          description: Lista de etiquetas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagList'
+        "500":
+          description: Error al obtener las etiquetas
+    post:
+      tags:
+        - Tags
+      summary: Crear una nueva etiqueta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        "201":
+          description: Etiqueta creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        "500":
+          description: Error al crear la etiqueta
+
+  /tags/{id}:
+    get:
+      tags:
+        - Tags
+      summary: Obtener una etiqueta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Etiqueta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        "404":
+          description: Etiqueta no encontrada
+        "500":
+          description: Error del servidor
+    put:
+      tags:
+        - Tags
+      summary: Actualizar una etiqueta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        "200":
+          description: Etiqueta actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        "404":
+          description: Etiqueta no encontrada
+        "500":
+          description: Error al actualizar la etiqueta
+    delete:
+      tags:
+        - Tags
+      summary: Eliminar una etiqueta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Etiqueta eliminada
+        "404":
+          description: Etiqueta no encontrada
+        "500":
+          description: Error al eliminar la etiqueta
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Obtener todos los usuarios
+      responses:
+        "200":
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        "500":
+          description: Error al obtener los usuarios
+    post:
+      tags:
+        - Users
+      summary: Crear un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        "201":
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Error al crear el usuario
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Obtener un usuario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error del servidor
+    put:
+      tags:
+        - Users
+      summary: Actualizar un usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        "200":
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error al actualizar el usuario
+    delete:
+      tags:
+        - Users
+      summary: Eliminar un usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuario eliminado
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error al eliminar el usuario
+
+components:
+  schemas:
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        postId:
+          type: integer
+        userId:
+          type: integer
+        commentContent:
+          type: string
+        date:
+          type: string
+          format: date-time
+
+    CommentCreate:
+      type: object
+      required:
+        - postId
+        - userId
+        - commentContent
+      properties:
+        postId:
+          type: integer
+        userId:
+          type: integer
+        commentContent:
+          type: string
+
+    CommentList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Comment'
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+        userId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PostCreate:
+      type: object
+      required:
+        - description
+        - userId
+      properties:
+        description:
+          type: string
+        userId:
+          type: integer
+
+    PostList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Post'
+
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TagCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    TagList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tag'
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        nickName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserCreate:
+      type: object
+      required:
+        - nickName
+      properties:
+        nickName:
+          type: string
+
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
