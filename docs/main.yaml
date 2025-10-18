@@ -594,6 +594,12 @@ components:
           type: string
         userId:
           type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+          description: Array opcional de IDs de tags
+          example: [1, 2, 3]
 
     PostList:
       type: array

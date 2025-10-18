@@ -2,19 +2,22 @@ const Sequelize = require("sequelize");
 const { Post, Tag } = require("../../db/models");
 
 const crearPost = async (req, res) => {
+
+  // Crear imágenes y asociarlas al post
+  // Las imágenes no existen
+  // Hay que crearlas a partir de lo que venga en body
   try {
-    const post = await Post.create(req.body);
+    const { description, userId, tags = [] } = req.body;
+    const post = await Post.create({ description, userId });
 
-    // Crear imágenes y asociarlas al post
-    // Las imágenes no existen
-    // Hay que crearlas a partir de lo que venga en body
-
-    // Asociar tags al post
-    // El tag ya existe, solo hay que asociarlo
+    if (tags.length > 0) {
+      const existingTags = await Tag.findAll({ where: { id: tags } });
+      await post.addTags(existingTags);
+    }
 
     res.status(201).json(post);
   } catch (error) {
-    res.status(500).json({ message: "Error" });
+    res.status(500).json({ message: "Error al crear el post", error });
   }
 };
 
