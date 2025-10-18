@@ -226,6 +226,110 @@ paths:
         "500":
           description: Error al eliminar el post
 
+  /posts/{id}/tags:
+    get:
+      tags:
+        - Posts
+      summary: Devuelve la/s etiqueta/s asociadas al post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post
+      responses:
+        '200':
+          description: Post con la/s etiqueta/s asociada/s
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 5
+                  title:
+                    type: string
+                    example: "Mi post de ejemplo"
+                  content:
+                    type: string
+                    example: "Contenido del post"
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "#Swagger"
+        '404':
+          description: Post no encontrado
+        '500':
+          description: Error interno del servidor
+
+    post:
+      tags:
+        - Posts
+      summary: Agrega una o varia/s etiqueta/s a un post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tagIds:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+      responses:
+        '200':
+          description: Etiqueta/s agregada/s correctamente
+        '404':
+          description: Post o tags no encontrados
+
+    delete:
+      tags:
+        - Posts
+      summary: Elimina una o varias etiquetas de un post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tagIds:
+                  type: array
+                  items:
+                    type: integer
+                  example: [2]
+      responses:
+        '200':
+          description: Tags eliminados correctamente
+        '404':
+          description: Post o tags no encontrados
+
+
   /tags:
     get:
       tags:

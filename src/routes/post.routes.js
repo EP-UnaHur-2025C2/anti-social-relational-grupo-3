@@ -16,4 +16,8 @@ router.post("/", validatePostSchema, validateUserExists, postController.crearPos
 router.put("/:id", validateId, validatePostExists, validatePostSchema, postController.actualizarPost);
 router.delete("/:id", validateId, validatePostExists, postController.eliminarPost);
 
+router.get('/:id/tags', validateId, postController.obtenerTagsDePost);
+router.post('/:id/tags', validateId, postController.agregarTagsAPost)
+router.delete('/:id/tags', validateId, postController.quitarTagsDePost)
+
 module.exports = router;
