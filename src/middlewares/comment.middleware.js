@@ -18,7 +18,6 @@ const validateCommentExists = async (req, res, next) => {
   const { id } = req.params;
   try {
     const comment = await Comment.findByPk(id);
-    console.log("Comentario encontrado:", comment);
     if (!comment) {
       return res.status(404).json({ message: "Comentario no encontrado" });
     }

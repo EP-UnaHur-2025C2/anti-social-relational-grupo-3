@@ -32,7 +32,10 @@ const actualizarTag = async (req, res) => {
   try {
     const { id } = req.params;
     const tag = await Tag.findByPk(id);
-    await Tag.update(req.body);
+    if (!tag) {
+      return res.status(404).json({ message: "Etiqueta no encontrada" });
+    }
+    await tag.update(req.body);
     res.status(200).json(tag);
   } catch (error) {
     res.status(500).json({ message: "Error" });
@@ -40,15 +43,15 @@ const actualizarTag = async (req, res) => {
 };
 
 const eliminarTag = async (req, res) => {
-  console.log("eliminarTag");
   try {
     const { id } = req.params;
     const tag = await Tag.findByPk(id);
-    console.log(tag);
-    await Tag.destroy();
+    if (!tag) {
+      return res.status(404).json({ message: "Etiqueta no encontrada" });
+    }
+    await tag.destroy();
     res.status(200).json(tag);
   } catch (error) {
-    console.log("error", error);
     res.status(500).json({ message: "Error" });
   }
 };

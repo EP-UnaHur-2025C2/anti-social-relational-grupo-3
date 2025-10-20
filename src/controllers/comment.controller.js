@@ -74,7 +74,6 @@ const eliminarComment = async (req, res) => {
     await comment.destroy();
     res.status(200).json(comment);
   } catch (error) {
-    console.log("error", error);
     res.status(500).json({ message: "Error al eliminar el comentario" });
   }
 };

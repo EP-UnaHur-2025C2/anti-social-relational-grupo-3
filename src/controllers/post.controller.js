@@ -4,7 +4,7 @@ const { Post, Tag, PostImage } = require("../../db/models");
 const crearPost = async (req, res) => {
   try {
     const { description, userId, tags = [], images = [] } = req.body;
-    
+
     // Crear el post
     const post = await Post.create({ description, userId });
 
@@ -53,7 +53,12 @@ const obtenerPost = async (req, res) => {
         {
           model: PostImage,
           as: "images",
-          attributes: ["url"],
+          attributes: ["id", "url", "createdAt"],
+        },
+        {
+          model: Tag,
+          attributes: ["id", "name"],
+          through: { attributes: [] },
         },
       ],
     });
@@ -62,15 +67,44 @@ const obtenerPost = async (req, res) => {
     }
     res.status(200).json(post);
   } catch (error) {
-    console.log(error)
     res.status(500).json({ message: "Error" });
   }
 };
 
 const obtenerPosts = async (req, res) => {
   try {
-    const posts = await Post.findAll();
-    res.status(200).json(posts);
+
+    const page = parseInt(req.query.page) || 1;  //pagina en donde comienza
+    const limit = parseInt(req.query.limit) || 10;  //cantidad de posts por pagina
+    const offset = (page - 1) * limit; //salto para saber desde donde traer los post (ej: si page es 2 y limit es 10, offset es 10 entonces trae desde el 11 al 20)
+
+    const { count, rows: posts } = await Post.findAndCountAll({
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: PostImage,
+          as: "images",
+          attributes: ["id", "url", "createdAt"],
+        },
+        {
+          model: Tag,
+          attributes: ["id", "name"],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    res.status(200).json({
+      posts,
+      pagination: {
+        page,
+        limit,
+        total: count,
+        pages: Math.ceil(count / limit),
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: "Error" });
   }
@@ -83,12 +117,6 @@ const actualizarPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post no encontrado" });
     }
-
-    // Actualizar imágenes asociadas al post
-    // Las imágenes no existen, hay que crearlas a partir de lo que venga en body
-
-    // Asociar tags al post
-    // El tag ya existe, solo hay que asociarlo
 
     await post.update(req.body);
     res.status(200).json(post);
@@ -114,7 +142,6 @@ const eliminarPost = async (req, res) => {
 const obtenerTagsDePost = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
     const post = await Post.findByPk(id, {
       include: [
         {

@@ -70,3 +70,51 @@ Los sponsors definieron los siguientes nombres y descripciones para las entidade
 - Hace el upload de las imganes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
 - ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
 - Con la información de los post no varia muy seguido que estrategias podrian utilizar la que la información no sea constantemente consultada desde la base de datos.
+
+** Pasos para correr el proyecto ** 
+
+### Variables de entorno
+
+Crea un archivo `.env` en la raíz (con estos valores):
+
+# Server
+PORT=3000
+COMMENTS_VISIBLE_MONTHS=6
+
+# Base de datos (SQLite)
+DB_DIALECT=sqlite
+DB_STORAGE=data/data.db
+DB_NAME=redsocial_development
+DB_USERNAME=
+DB_PASSWORD=
+
+### Ejecutar en local
+
+npm install
+npm run dev
+
+API: `http://localhost:3000`  
+Swagger: `http://localhost:3000/api-docs`
+
+### Ejecutar con Docker
+
+Requisitos: Docker Desktop (Linux containers) / WSL2 habilitado en Windows.
+
+   docker compose up --build
+
+Esto construye la imagen y monta `./data` como volumen para persistir `data/data.db`.
+
+### Documentación (Swagger)
+
+Disponible en `GET /api-docs`.
+
+### Semillas / Datos de prueba
+
+Hay seeders disponibles en `db/seeders`. Los mismos se pueden ejecutar con el siguiente comando:
+npx sequelize-cli db:seed:all
+
+(En caso de que haya algun inconveniente se pueden ejecutar por separado, en el siguiente orden)
+npx sequelize-cli db:seed --seed 20251008223426-demo-users.js
+npx sequelize-cli db:seed --seed 20251008230628-demo-posts.js  
+npx sequelize-cli db:seed --seed 20251012020315-demo-tags.js.js
+npx sequelize-cli db:seed --seed 20251012184401-demo-comments.js
