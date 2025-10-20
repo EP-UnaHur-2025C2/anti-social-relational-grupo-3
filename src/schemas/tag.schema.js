@@ -10,3 +10,20 @@ const tagSchema = Joi.object({
 });
 
 module.exports = tagSchema;
+
+/**
+ * const Joi = require('joi');
+
+const tagId = Joi.number().integer();
+
+const tagName = Joi.string().min(1).max(50).required();
+
+const createTagSchema = Joi.object({
+  name: tagName,
+});
+
+
+module.exports = {
+  createTagSchema
+};
+ */

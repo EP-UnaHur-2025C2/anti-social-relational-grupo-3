@@ -10,3 +10,20 @@ const userSchema = Joi.object({
 });
 
 module.exports = userSchema;
+
+/**
+ * 
+const Joi = require('joi');
+
+const userId = Joi.number().integer();
+
+const nickName = Joi.string().min(3).max(30).required();
+
+const createUserSchema = Joi.object({
+  nickName: nickName,
+
+
+module.exports = {
+  createUserSchema
+};
+ */

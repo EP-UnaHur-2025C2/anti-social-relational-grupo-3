@@ -7,6 +7,8 @@ const postRouter = require("./routes/post.routes");
 const tagRouter = require("./routes/tag.routes") 
 const commentRouter = require("./routes/comment.routes") 
 
+const path = require('path');
+
 const PORT = process.env.PORT || 3000;
 
 const swaggerDocument = YAML.load("./docs/main.yaml");
@@ -20,6 +22,7 @@ app.use("/posts", postRouter);
 app.use("/tags", tagRouter);
 app.use("/comments", commentRouter);
 
+app.use('/images', express.static(path.join(__dirname, '..', 'public', 'images')));
 
 app.listen(PORT, async () => {
   console.log(`Server escuchando en el puerto ${PORT}`);

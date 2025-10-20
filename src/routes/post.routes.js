@@ -7,6 +7,7 @@ const {
     validateUserExists,
 } = require('../middlewares/post.middleware');
 
+const uploadImages = require('../middlewares/upload.middleware'); 
 
 const router = Router();
 
@@ -19,5 +20,7 @@ router.delete("/:id", validateId, validatePostExists, postController.eliminarPos
 router.get('/:id/tags', validateId, postController.obtenerTagsDePost);
 router.post('/:id/tags', validateId, postController.agregarTagsAPost)
 router.delete('/:id/tags', validateId, postController.quitarTagsDePost)
+
+router.post('/',  uploadImages, postController.crearPost);
 
 module.exports = router;
