@@ -85,7 +85,7 @@ COMMENTS_VISIBLE_MONTHS=6
 DB_DIALECT=sqlite
 DB_STORAGE=data/data.db
 DB_NAME=redsocial_development
-DB_USERNAME=
+DB_USERNAME=root
 DB_PASSWORD=
 
 ### Ejecutar en local
