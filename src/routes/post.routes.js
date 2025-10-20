@@ -1,11 +1,12 @@
 const { Router } = require("express");
 const postController = require("../controllers/post.controller");
-const { validateId } = require("../middlewares/generic.middleware");
+const { validateId, schemaValidator } = require("../middlewares/generic.middleware");
 const {
     validatePostSchema,
     validatePostExists,
     validateUserExists,
 } = require('../middlewares/post.middleware');
+const { postImageSchema } = require('../schemas/postimage.schema');
 
 
 const router = Router();
@@ -19,5 +20,9 @@ router.delete("/:id", validateId, validatePostExists, postController.eliminarPos
 router.get('/:id/tags', validateId, postController.obtenerTagsDePost);
 router.post('/:id/tags', validateId, postController.agregarTagsAPost)
 router.delete('/:id/tags', validateId, postController.quitarTagsDePost)
+
+router.get('/:id/images', validateId, validatePostExists, postController.obtenerImagenesDePost);
+router.post('/:id/images', validateId, validatePostExists, schemaValidator(postImageSchema), postController.agregarImagenesAPost);
+router.delete('/:id/images/:imageId', validateId, validatePostExists, postController.eliminarImagenDePost);
 
 module.exports = router;
