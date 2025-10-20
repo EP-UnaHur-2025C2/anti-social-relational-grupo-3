@@ -7,6 +7,11 @@ const {
     validateUserExists,
 } = require('../middlewares/post.middleware');
 const { postImageSchema } = require('../schemas/postimage.schema');
+const {
+  enforceMaxImagesPerPost,
+  validateImageIdParam,
+  ensureImageBelongsToPost,
+} = require("../middlewares/postimage.middleware");
 
 
 const router = Router();
@@ -22,7 +27,7 @@ router.post('/:id/tags', validateId, postController.agregarTagsAPost)
 router.delete('/:id/tags', validateId, postController.quitarTagsDePost)
 
 router.get('/:id/images', validateId, validatePostExists, postController.obtenerImagenesDePost);
-router.post('/:id/images', validateId, validatePostExists, schemaValidator(postImageSchema), postController.agregarImagenesAPost);
-router.delete('/:id/images/:imageId', validateId, validatePostExists, postController.eliminarImagenDePost);
+router.post('/:id/images', validateId, validatePostExists, schemaValidator(postImageSchema),enforceMaxImagesPerPost, postController.agregarImagenesAPost);
+router.delete('/:id/images/:imageId', validateId, validatePostExists, validateImageIdParam, ensureImageBelongsToPost, postController.eliminarImagenDePost);
 
 module.exports = router;
